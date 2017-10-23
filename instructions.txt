@@ -1,0 +1,12 @@
+In other to use this classifier on Weka you must first compile it and the add it to weka.jar
+
+Compilation:
+	Open your java IDE and import the project as a Maven Project
+	Run the project so it gets compiled
+
+Add it to Weka:
+	Open your Weka directory
+	Open the file weka.jar with WinRAR or any other program that can open .jars as folders
+	Copy the contents created on the bin folder of your IDE to weka.jar
+
+Now you should be able to use the classifier in Weka 

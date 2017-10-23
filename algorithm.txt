@@ -1,0 +1,57 @@
+	This file will explain the implementation made in this Standard Genetic
+Programming classifier.
+
+	Operations used: +, -, *, / (protected division)
+	Terminal node: only values from the dataset
+
+	Elitism: 1% of the population
+	Tournament size: 2% of the population
+
+	Crossover probability: 75%
+	Mutation probability: 25%
+
+	(These values will be able to be changed by arguments in Weka)
+	Number of generations: 40
+	Population Size: 250
+	Initial max depth: 7
+
+
+	Initialization of the classifier:
+		A new population is created using the Ramped half-and-hald method
+		It's created a variable which will be used to track the best tree in Test from the best trees in Train
+
+	Training the classifier:
+		For each generation:
+			The population is sorted by the rmse
+			The 1% with the smaller rmse are chosen by elitism to move to the next generation
+			For the other 99% of the next generation:
+				Two trees are picked by the tournament*
+				A random number between 0 and 1 is generated
+				If it's bellow 0.75 the selected trees are used for crossover*
+				Otherwise they are used for mutation*
+			If the best tree of the generation in Train is better than the 
+				global best in terms of test rmse, it will be now considered
+				to be the new global best
+
+	Predictions:
+		The global best tree is used to make predictions
+
+	*tournament:
+		2% os the population is randomly selected
+		from the selected trees, the one with the lower train rmse is picked
+
+	*crossover:
+		two trees are chosen for crossover and have a number of descendents
+		equal to the size of the tournament, the tree with the smaller size
+		is picked
+
+		a crossover is made by selecting a random node from both parents
+		and redirecting the node from parent 1 to parent 2's
+
+	*mutation:
+		one tree is chosen for mutation and has a number of descendents
+		equal to the size of the tournament, the tree with the smaller size
+		is picked
+
+		a mutation is made by selecting a random node from the tree
+		and redirecting it to a tree made with grow method
