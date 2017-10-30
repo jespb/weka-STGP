@@ -14,11 +14,9 @@ public class Node implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	String v = null;
-	Node l = null;
-	Node r = null;
-	
-	public static int index;
+	String v ;
+	Node l ;
+	Node r ;
 
 	/**
 	 * Basic constructor
@@ -42,18 +40,18 @@ public class Node implements Serializable{
 
 	/**
 	 * Constructor
-	 * @param op
-	 * @param term
-	 * @param t_rate
-	 * @param depth
+	 * @param op available operators
+	 * @param term available terminals
+	 * @param t_rate probability of a node being terminal
+	 * @param depth max depth from this node down
 	 */
-	public Node(String [] op, String [] term, double t_rate, int depth, int maxDepth){
-		if(depth>0 && Math.random() < t_rate || depth >= maxDepth){
+	public Node(String [] op, String [] term, double t_rate, int depth){
+		if(depth <= 0 || Math.random() < t_rate){
 			v = term[Mat.random(term.length)];
 		}else{
 			v = op[Mat.random(op.length)];
-			l = new Node(op, term, t_rate, depth+1, maxDepth);
-			r = new Node(op, term, t_rate, depth+1, maxDepth );
+			l = new Node(op, term, t_rate, depth-1);
+			r = new Node(op, term, t_rate, depth-1);
 		}
 	}
 
@@ -64,15 +62,7 @@ public class Node implements Serializable{
 	 */
 	public double calculate(double [] vals){
 		if(isLeaf()){
-			if(v.startsWith("x")){
-				int index = Integer.parseInt(v.substring(1));
-				return vals[index];
-			}else{
-				if(v.equals("e"))
-					return Math.E;
-				else
-					return Double.parseDouble(v);
-			}
+			return vals[Integer.parseInt(v.substring(1))]; // o valor do nome eh "x_" onde _ eh um indice nos vals
 		}else{
 			double d = 0;
 			switch(v){
@@ -109,28 +99,11 @@ public class Node implements Serializable{
 	 * Returns true if the node is a leaf
 	 * It's assumed that the node either had two children or none
 	 * for a faster response
+	 * @requires l==null <-> r==null
 	 * @return
 	 */
 	private boolean isLeaf(){
 		return l==null;// &&r==null;
-	}
-
-	/**
-	 * Constructor
-	 * @param s
-	 */
-	public Node(String [] s) {
-		if(s[index].equals("(")){
-			index ++;
-			l = new Node(s);
-			v = s[index];
-			index++;
-			r = new Node(s);
-			index++;
-		}else{
-			v = s[index];
-			index++;
-		}
 	}
 
 	/**

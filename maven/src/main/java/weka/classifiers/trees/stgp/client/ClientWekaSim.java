@@ -5,7 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import weka.classifiers.trees.stgp.forest.Forest;
-import weka.classifiers.trees.stgp.forest.ForestSTGP;
+import weka.classifiers.trees.stgp.node.Node;
+import weka.classifiers.trees.stgp.forest.Forest;
 import weka.classifiers.trees.stgp.util.Arrays;
 import weka.classifiers.trees.stgp.util.Data;
 import weka.classifiers.trees.stgp.util.Files;
@@ -28,10 +29,10 @@ public class ClientWekaSim {
 	static String [] terminals = null;
 
 	static double trainPercentage = 0.70;
-	static double tournamentPercentage = 0.02;
-	static double elitismPercentage = 0.01;
+	static double tournamentFraction = 0.02;
+	static double elitismFraction = 0.01;
 
-	static int numberOfGenerations = 40;
+	static int numberOfGenerations = 50;
 	static int numberOfRuns = 1;
 	static int populationSize = 250;
 	static int maxDepth = 7;
@@ -62,7 +63,6 @@ public class ClientWekaSim {
 			run(run);
 		}
 		System.out.println((System.currentTimeMillis() - time) + "ms");
-
 
 		BufferedWriter out = new BufferedWriter(new FileWriter(resultOutputFilename+".tmp"));
 		out.write("Treino;Teste\n");
@@ -109,8 +109,6 @@ public class ClientWekaSim {
 		}
 
 		setForest();
-		setTournamentSize();
-		setElitismSize();
 
 		f.train();
 
@@ -187,26 +185,13 @@ public class ClientWekaSim {
 	}
 
 	/**
-	 * Actualiza o tamanho dos torneios
-	 */
-	private static void setTournamentSize(){
-		f.setTournamentFraction(tournamentPercentage);
-	}
-
-	/**
-	 * Actualiza o tamanho do elitismo
-	 */
-	private static void setElitismSize(){
-		f.setElitismFraction(elitismPercentage);
-	}
-
-	/**
 	 * Cria uma nova floresta
 	 * @throws IOException
 	 */
 	private static void setForest() throws IOException{
-		f = new ForestSTGP("", operations, 
+		f = new Forest("", operations, 
 				terminals, maxDepth, data, target, 
-				populationSize,trainPercentage, treeType,numberOfGenerations);
+				populationSize,trainPercentage, treeType,numberOfGenerations,
+				tournamentFraction, elitismFraction);
 	}
 }

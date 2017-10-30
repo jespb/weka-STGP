@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Vector;
 
 import weka.classifiers.AbstractClassifier;
-import weka.classifiers.trees.stgp.forest.ForestSTGP;
+import weka.classifiers.trees.stgp.forest.Forest;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.OptionHandler;
@@ -19,7 +19,7 @@ public class StandardGeneticProgramming extends AbstractClassifier implements Op
 
 	private static final long serialVersionUID = 1L;
 
-	private ForestSTGP forest;
+	private Forest forest;
 
 	private int populationSize = 200;
 	private int maxGen = 40;
@@ -57,7 +57,7 @@ public class StandardGeneticProgramming extends AbstractClassifier implements Op
 
 		double train_perc = 0.7;
 
-		forest = new ForestSTGP("",op, term, maxDepth,dados, target, populationSize, train_perc,"Ramped", maxGen);
+		forest = new Forest("",op, term, maxDepth,dados, target, populationSize, train_perc,"Ramped", maxGen);
 
 		forest.train();
 	}

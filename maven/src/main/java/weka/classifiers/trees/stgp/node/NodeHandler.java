@@ -19,8 +19,8 @@ public class NodeHandler {
 
 	/**
 	 * Returns a node inside n using index i
-	 * @param n
-	 * @param i
+	 * @param n current node
+	 * @param i index of the target node
 	 * @return
 	 */
 	private static Node index(Node n, int i){

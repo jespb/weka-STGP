@@ -8,7 +8,7 @@ import weka.classifiers.trees.stgp.node.NodeHandler;
  * @author João Batista, jbatista@di.fc.ul.pt
  *
  */
-public class TreeSTGPCrossoverHandler {	
+public class TreeCrossoverHandler {	
 	/**
 	 * Executes the crossover of a TreeSTGP by swaping a random node with 
 	 * another random node from other TreeSTGP
@@ -18,15 +18,15 @@ public class TreeSTGPCrossoverHandler {
 	 * @param parent2
 	 * @return
 	 */
-	public static TreeSTGP crossover(TreeSTGP parent1, TreeSTGP parent2){
+	public static Tree crossover(Tree parent1, Tree parent2){
 		Node p1 = parent1.getHead().clone();
 		Node p2 = parent2.getHead();
 
 		Node r1 = NodeHandler.randomNode(p1);
 		Node r2 = NodeHandler.randomNode(p2);
 
-		NodeHandler.redirect(r1,r2);
+		NodeHandler.redirect(r1,r2.clone());
 
-		return new TreeSTGP(p1);
+		return new Tree(p1);
 	}
 }
