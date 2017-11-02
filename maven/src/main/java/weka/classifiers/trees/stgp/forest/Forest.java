@@ -108,7 +108,7 @@ public class Forest implements Serializable{
 	/**
 	 * Trains the classifier
 	 */
-	public ArrayList<Double>[] train() throws IOException {
+	public void train() throws IOException {
 		message("Starting train...");
 
 		generation = 0;
@@ -122,20 +122,12 @@ public class Forest implements Serializable{
 			ClientWekaSim.results[generation][2]++;
 			generation ++;
 		}
-		return null;
 	}
-
-	/**
-	 * Returns true if the classifier is still improving
-	 */
-	public boolean improving() {
-		return generation < maxGeneration;
-	}	
 
 	/**
 	 * Evolves the classifier by one generation
 	 */
-	public double[] nextGeneration(int generation) throws IOException{
+	private double[] nextGeneration(int generation) throws IOException{
 		double [] results = new double[2];
 
 		Tree [] nextGen = new Tree [population.length];
@@ -237,7 +229,13 @@ public class Forest implements Serializable{
 		if(messages)
 			System.out.println(s);
 	}
-
+	
+	/**
+	 * Returns true if the classifier is still improving
+	 */
+	private boolean improving() {
+		return generation < maxGeneration;
+	}	
 
 	/**
 	 * Returns the best tree of the train in it's String format

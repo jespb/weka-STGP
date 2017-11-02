@@ -18,31 +18,29 @@ import weka.classifiers.trees.stgp.util.Files;
  */
 public class ClientWekaSim {
 
-	static int gp = 0; // ST, GS
+	private static int file = 0; // ST, GS
 
-	static String xDataInputFilename = "Brazil_x.txt bioavailability_x.txt".split(" ")[0];
-	static String yDataInputFilename = "Brazil_y.txt bioavailability_y.txt".split(" ")[0];
-	static String resultOutputFilename = "fitovertime.csv";
-	static String treeType = "Ramped";
+	private static String xDataInputFilename = "Brazil_x.txt bioavailability_x.txt".split(" ")[file];
+	private static String yDataInputFilename = "Brazil_y.txt bioavailability_y.txt".split(" ")[file];
+	private static String resultOutputFilename = "fitovertime.csv";
+	private static String treeType = "Ramped";
 
-	static String [] operations = "+ - * /".split(" ");
-	static String [] terminals = null;
+	private static String [] operations = "+ - * /".split(" ");
+	private static String [] terminals = null;
 
-	static double trainPercentage = 0.70;
-	static double tournamentFraction = 0.02;
-	static double elitismFraction = 0.01;
+	private static double trainFraction = 0.70;
+	private static double tournamentFraction = 0.02;
+	private static double elitismFraction = 0.01;
 
-	static int numberOfGenerations = 50;
-	static int numberOfRuns = 1;
-	static int populationSize = 250;
-	static int maxDepth = 7;
+	private static int numberOfGenerations = 50;
+	private static int numberOfRuns = 1;
+	private static int populationSize = 250;
+	private static int maxDepth = 7;
 
-	static boolean shuffle = true;
+	private static boolean shuffleDataset = true;
 
-	static double [][] train_r = null;
-	static double [][] test_r = null;
-	static double [][] data = null;
-	static double [] target = null;
+	private static double [][] data = null;
+	private static double [] target = null;
 
 
 	// Variables
@@ -79,9 +77,6 @@ public class ClientWekaSim {
 	 * @throws IOException
 	 */
 	private static void init() throws IOException{
-		train_r = new double[numberOfGenerations][numberOfRuns];
-		test_r = new double[numberOfGenerations][numberOfRuns];
-
 		data = Data.readData(xDataInputFilename);
 		target = Data.readTarget(yDataInputFilename);
 	}
@@ -94,11 +89,11 @@ public class ClientWekaSim {
 	private static void run(int run) throws IOException{
 		System.out.println("Run " + run + ":");
 
-		if(shuffle)Arrays.shuffle(data, target);
+		if(shuffleDataset)Arrays.shuffle(data, target);
 
-		setTerm(data);
+		setTerminals(data);
 
-		double [][] train = new double [(int) (data.length*trainPercentage)][data[0].length];
+		double [][] train = new double [(int) (data.length*trainFraction)][data[0].length];
 		double [][] test = new double [data.length - train.length][data[0].length];
 
 		for(int i = 0; i < data.length; i++){
@@ -178,7 +173,7 @@ public class ClientWekaSim {
 	 * Define o valor dos terminais
 	 * @param data
 	 */
-	private static void setTerm(double [][] data){
+	private static void setTerminals(double [][] data){
 		terminals = new String [data[0].length];
 		for(int i = 0; i < terminals.length; i++)
 			terminals[i] = "x"+i;
@@ -191,7 +186,7 @@ public class ClientWekaSim {
 	private static void setForest() throws IOException{
 		f = new Forest("", operations, 
 				terminals, maxDepth, data, target, 
-				populationSize,trainPercentage, treeType,numberOfGenerations,
+				populationSize,trainFraction, treeType,numberOfGenerations,
 				tournamentFraction, elitismFraction);
 	}
 }

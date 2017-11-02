@@ -85,36 +85,14 @@ public class Node implements Serializable{
 	}
 
 	/**
-	 * Returns the node under the String format
-	 */
-	public String toString(){
-		if(isLeaf()){
-			return v;
-		}else{
-			return "( " + l + " " + v + " " + r + " )";
-		}
-	}
-
-	/**
-	 * Returns true if the node is a leaf
-	 * It's assumed that the node either had two children or none
-	 * for a faster response
-	 * @requires l==null <-> r==null
-	 * @return
-	 */
-	private boolean isLeaf(){
-		return l==null;// &&r==null;
-	}
-
-	/**
 	 * Returns the number of nodes on this object, he himself included
 	 * @return
 	 */
-	public int size(){
+	public int getSize(){
 		if (isLeaf())
 			return 1;
 		else
-			return 1 + l.size() + r.size();
+			return 1 + l.getSize() + r.getSize();
 	}
 
 	/**
@@ -126,5 +104,27 @@ public class Node implements Serializable{
 		}else{
 			return new Node(l.clone(), r.clone(), v);
 		}
+	}
+
+	/**
+	 * Returns the node under the String format
+	 */
+	public String toString(){
+		if(isLeaf()){
+			return v;
+		}else{
+			return "( " + l + " " + v + " " + r + " )";
+		}
+	}
+	
+	/**
+	 * Returns true if the node is a leaf
+	 * It's assumed that the node either had two children or none
+	 * for a faster response
+	 * @requires l==null <-> r==null
+	 * @return
+	 */
+	private boolean isLeaf(){
+		return l==null;// &&r==null;
 	}
 }

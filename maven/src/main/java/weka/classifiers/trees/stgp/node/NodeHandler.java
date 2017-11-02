@@ -14,7 +14,7 @@ public class NodeHandler {
 	 * @return
 	 */
 	public static Node randomNode(Node n){
-		return index(n, Mat.random(n.size()));
+		return index(n, Mat.random(n.getSize()));
 	}
 
 	/**
@@ -25,7 +25,7 @@ public class NodeHandler {
 	 */
 	private static Node index(Node n, int i){
 		if(i==0) return n;
-		int lsize = n.l.size();
+		int lsize = n.l.getSize();
 		if(lsize < i){
 			return index (n.r, i - lsize - 1);
 		}else{

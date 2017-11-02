@@ -44,16 +44,16 @@ public class Tree implements Serializable{
 	}
 	
 	/**
+	 * Returns the number of nodes inside the tree
+	 */
+	public int getSize() {
+		return head.getSize();
+	}
+	
+	/**
 	 * Returns the TreeSTGP under it's String format
 	 */
 	public String toString(){
 		return head.toString();
-	}
-	
-	/**
-	 * Returns the number of nodes inside the tree
-	 */
-	public int size() {
-		return head.size();
 	}
 }

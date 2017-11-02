@@ -71,7 +71,7 @@ public class ForestFunctions {
 		Tree candidate, smaller = TreeCrossoverHandler.crossover(p1, p2);
 		for(int i = 1; i < tournamentSize; i++) {
 			candidate = TreeCrossoverHandler.crossover(p1, p2);
-			if(candidate.size() < smaller.size()) {
+			if(candidate.getSize() < smaller.getSize()) {
 				smaller = candidate;
 			}
 		}
@@ -89,7 +89,7 @@ public class ForestFunctions {
 		Tree candidate, smaller = TreeMutationHandler.mutation(p, operations, terminals, terminalRateForGrow, maxDepth);
 		for(int i = 1; i < tournamentSize; i++) {
 			candidate = TreeMutationHandler.mutation(p, operations, terminals, terminalRateForGrow, maxDepth);
-			if(candidate.size() < smaller.size()) {
+			if(candidate.getSize() < smaller.getSize()) {
 				smaller = candidate;
 			}
 		}
