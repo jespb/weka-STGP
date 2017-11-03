@@ -1,4 +1,4 @@
-package weka.classifiers.trees.stgp.forest;
+package weka.classifiers.trees.stgp.population;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import weka.classifiers.trees.stgp.util.Mat;
  * @author Jo�o Batista, jbatista@di.fc.ul.pt
  *
  */
-public class Forest implements Serializable{
+public class Population implements Serializable{
 	/**
 	 * 
 	 */
@@ -66,7 +66,7 @@ public class Forest implements Serializable{
 	 * @param trainFract
 	 * @throws IOException
 	 */
-	public Forest(String filename, String [] op, String [] term, int maxDepth, 
+	public Population(String filename, String [] op, String [] term, int maxDepth, 
 			double [][] data, double [] target, int pop_size, double trainFract,
 			String populationType, int maxGeneration, double tournamentFraction,
 			double elitismFraction) throws IOException{
@@ -146,15 +146,16 @@ public class Forest implements Serializable{
 		}
 		
 		//Selecao e reproducao
-		Tree parent1, parent2;
+		Tree[] cross;
 		for(int i = elitismSize; i < nextGen.length; i++){
-			parent1 = tournament(population);
-			parent2 = tournament(population);
-
 			if(Math.random() < 0.75) {
-				nextGen[i] = crossover(parent1, parent2);
+				cross = crossover(population);
+				for(int j = i; j < i+2 && j<nextGen.length; j++) {
+					nextGen[j] = cross[j-i];
+				}
+				i++;
 			}else {
-				nextGen[i] = mutation(parent1);
+				nextGen[i] = mutation(population);
 			}
 		}
 
@@ -201,7 +202,7 @@ public class Forest implements Serializable{
 	 * @return t's train rmse
 	 */
 	private double fitnessTrain(Tree t){
-		return ForestFunctions.fitnessTrain(t,data,target,trainFraction);
+		return PopulationFunctions.fitnessTrain(t,data,target,trainFraction);
 	}
 
 	/**
@@ -210,7 +211,7 @@ public class Forest implements Serializable{
 	 * @return t's test rmse
 	 */
 	private double fitnessTest(Tree t){
-		return ForestFunctions.fitnessTest(t,data,target,trainFraction);
+		return PopulationFunctions.fitnessTest(t,data,target,trainFraction);
 	}
 
 	/**
@@ -248,17 +249,6 @@ public class Forest implements Serializable{
 	}
 	
 	/**
-	 * Picks as many trees from population as the size of the tournament
-	 * and return the one with the lower fitness, assuming the population
-	 * is already sorted
-	 * @param population Tree population
-	 * @return The winner tree
-	 */
-	private Tree tournament(Tree [] population) {
-		return ForestFunctions.tournament(population, tournamentSize);
-	}
-	
-	/**
 	 * This method creates as many trees as the size of the tournament
 	 * which are descendents of p1 and p2 through crossover and returns
 	 * the smallest one
@@ -266,8 +256,8 @@ public class Forest implements Serializable{
 	 * @param p2 Parent 2
 	 * @return Descendent of p1 and p2 through crossover
 	 */
-	private Tree crossover(Tree p1, Tree p2) {
-		return ForestFunctions.crossover(p1,p2, tournamentSize);
+	private Tree[] crossover(Tree[] population) {
+		return PopulationFunctions.crossover(population, tournamentSize);
 	}
 	
 	/**
@@ -277,7 +267,7 @@ public class Forest implements Serializable{
 	 * @param p Original Tree
 	 * @return Descendent of p by mutation
 	 */
-	private Tree mutation(Tree p) {
-		return ForestFunctions.mutation(p, tournamentSize,operations, terminals, terminalRateForGrow, maxDepth);
+	private Tree mutation(Tree[] population) {
+		return PopulationFunctions.mutation(population, tournamentSize,operations, terminals, terminalRateForGrow, maxDepth);
 	}
 }

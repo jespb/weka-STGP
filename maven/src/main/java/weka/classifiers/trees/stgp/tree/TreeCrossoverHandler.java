@@ -18,15 +18,15 @@ public class TreeCrossoverHandler {
 	 * @param parent2
 	 * @return
 	 */
-	public static Tree crossover(Tree parent1, Tree parent2){
+	public static Tree[] crossover(Tree parent1, Tree parent2){
 		Node p1 = parent1.getHead().clone();
-		Node p2 = parent2.getHead();
+		Node p2 = parent2.getHead().clone();
 
 		Node r1 = NodeHandler.randomNode(p1);
 		Node r2 = NodeHandler.randomNode(p2);
 
-		NodeHandler.redirect(r1,r2.clone());
+		NodeHandler.swap(r1,r2);
 
-		return new Tree(p1);
+		return new Tree[] {new Tree(p1), new Tree(p2)};
 	}
 }

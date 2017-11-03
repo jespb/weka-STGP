@@ -4,9 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import weka.classifiers.trees.stgp.forest.Forest;
 import weka.classifiers.trees.stgp.node.Node;
-import weka.classifiers.trees.stgp.forest.Forest;
+import weka.classifiers.trees.stgp.population.Population;
 import weka.classifiers.trees.stgp.util.Arrays;
 import weka.classifiers.trees.stgp.util.Data;
 import weka.classifiers.trees.stgp.util.Files;
@@ -45,7 +44,7 @@ public class ClientWekaSim {
 
 	// Variables
 	public static double [][] results = new double [numberOfGenerations][3];
-	static Forest f = null;
+	static Population f = null;
 
 	/**
 	 * main
@@ -117,14 +116,14 @@ public class ClientWekaSim {
 			acc += Math.pow( prediction - target[train.length + i] ,2);
 			if((target[train.length + i] < 0.5 && prediction<0.5)||
 					(target[train.length + i] >= 0.5 && prediction>=0.5)) hit++;
-			if((i+1)%400 ==0)
+			if((i+1)%500 ==0)
 				System.out.println((i+1) + "/" + test.length);
 		}
 		acc /= 1.0 * test.length;
 		acc = Math.sqrt(acc);
 
 		
-		System.out.println("test binary classification hits: " + hit +" out of " + test.length);
+		System.out.println("test binary classification hits: " + hit +" out of " + test.length + "( " + 100.0*hit/test.length + "% )");
 		System.out.println("test RMSE calculated: " + acc);
 
 		acc = 0;
@@ -135,13 +134,13 @@ public class ClientWekaSim {
 			acc+= Math.pow(prediction - target[i],2);
 			if((target[i] < 0.5 && prediction<0.5)||
 					(target[i] >= 0.5 && prediction>=0.5)) hit++;
-			if((i+1)%400 ==0)
+			if((i+1)%500 ==0)
 				System.out.println((i+1) + "/" + train.length);
 		}
 		acc /= 1.0 * train.length;
 		acc = Math.sqrt(acc);
 
-		System.out.println("train binary classification hits: " + hit +" out of " + train.length);
+		System.out.println("train binary classification hits: " + hit +" out of " + train.length + "( " + 100.0*hit/train.length + "% )");
 		System.out.println("train RMSE calculated: " + acc);
 
 		
@@ -184,7 +183,7 @@ public class ClientWekaSim {
 	 * @throws IOException
 	 */
 	private static void setForest() throws IOException{
-		f = new Forest("", operations, 
+		f = new Population("", operations, 
 				terminals, maxDepth, data, target, 
 				populationSize,trainFraction, treeType,numberOfGenerations,
 				tournamentFraction, elitismFraction);
