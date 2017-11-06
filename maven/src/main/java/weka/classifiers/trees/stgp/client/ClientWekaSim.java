@@ -102,7 +102,7 @@ public class ClientWekaSim {
 				test[i - train.length] = data[i];
 		}
 
-		setForest();
+		setPopulation();
 
 		f.train();
 
@@ -182,7 +182,7 @@ public class ClientWekaSim {
 	 * Cria uma nova floresta
 	 * @throws IOException
 	 */
-	private static void setForest() throws IOException{
+	private static void setPopulation() throws IOException{
 		f = new Population("", operations, 
 				terminals, maxDepth, data, target, 
 				populationSize,trainFraction, treeType,numberOfGenerations,
