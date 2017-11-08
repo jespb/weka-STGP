@@ -15,7 +15,7 @@ import weka.core.Utils;
  * @author Jo�o Batista, jbatista@di.fc.ul.pt
  *
  */
-public class StandardGeneticProgramming extends AbstractClassifier implements OptionHandler {
+public class STGP extends AbstractClassifier implements OptionHandler {
 
 	private static final long serialVersionUID = 1L;
 

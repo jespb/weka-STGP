@@ -17,7 +17,7 @@ import weka.classifiers.trees.stgp.util.Files;
  */
 public class ClientWekaSim {
 
-	private static int file = 0; // ST, GS
+	private static int file = 1; // ST, GS
 
 	private static String xDataInputFilename = "Brazil_x.txt bioavailability_x.txt".split(" ")[file];
 	private static String yDataInputFilename = "Brazil_y.txt bioavailability_y.txt".split(" ")[file];
